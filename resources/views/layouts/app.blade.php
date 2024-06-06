@@ -7,8 +7,11 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
+{{--    <title>{{ config('app.name', 'Laravel') }}</title>--}}
+    <title>
+        {{ config('app.name', 'Laravel') }} ||
+        @yield('title')
+    </title>
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
@@ -35,7 +38,9 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-
+                        <li class="ms-4">
+                            <a href="/users" class="link-primary text-decoration-none text-black">List of Users</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

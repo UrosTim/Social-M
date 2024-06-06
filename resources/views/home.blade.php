@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    Home
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -23,7 +27,7 @@
                 </div>
             </form>
             @foreach($posts as $post)
-            <div class="card">
+            <div class="card mt-2">
                 <div class="card-header">
                     <a href="/users/{{ $post->user->id }}" class="text-decoration-none">
                         :: {{ $post->user->name }} ::
@@ -45,6 +49,12 @@
                             </div>
                         </div>
                 </div>
+                <div class="card-footer">
+                    {{ $post->created_at }}
+                </div>
+{{--                <div class="card-footer">--}}
+{{--                    Comment--}}
+{{--                </div>--}}
             </div>
             @endforeach
         </div>

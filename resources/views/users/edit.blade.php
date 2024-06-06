@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    Edit
+@endsection
+
 @section('content')
     <div class="container">
         <form action="/users/{{ $user->id }}" method="post" enctype="multipart/form-data">
@@ -47,6 +51,13 @@
                     </a>
                 </div>
             </div>
+        </form>
+        <form action="/users/{{ $user->id }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger">
+                Delete
+            </button>
         </form>
     </div>
 @endsection

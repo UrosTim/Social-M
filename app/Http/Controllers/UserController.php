@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function index()
+    {
+        $users = User::all()->sortBy('name');
+
+        return view('users.index', [
+            'users' => $users,
+        ]);
+    }
     public function show(User $user)
     {
         $posts = Post::where('user_id', $user->id)->latest()->get();
@@ -41,6 +49,13 @@ class UserController extends Controller
 
         return redirect()->route('users.show', ['user' => $user])
             ->with('success', 'You have successfully updated your profile.');
+    }
+    public function destroy(User $user)
+    {
+        Auth::logout();
+        $user->delete();
+        return redirect('login')
+            ->with('success', 'You have successfully deleted your profile.');
     }
     public function following(User $user)
     {

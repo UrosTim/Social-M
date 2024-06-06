@@ -3,7 +3,6 @@
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -46,6 +45,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 });
 
 Route::group(['middleware' => ['auth']], function () {
+    Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
     Route::get('/users/{user}/edit', [UserController::class, 'edit']);
     Route::patch('/users/{user}', [UserController::class, 'update']);

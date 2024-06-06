@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    {{ $user->name }}
+@endsection
+
 @section('content')
 
     <div class="container">
@@ -65,14 +69,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer">
+                    <div class="card-footer d-flex align-items-center gap-4">
                         @if(auth()->id() === $user->id)
-                            <a href="" class="btn btn-warning">
-                                Edit
-                            </a>
-                            <a href="" class="btn btn-danger bg-opacity-25">
-                                Delete
-                            </a>
+                            <form action="/posts/{{ $post->id }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">
+                                    Delete Post
+                                </button>
+                            </form>
                         @endif
                         {{ $post->created_at }}
                     </div>
