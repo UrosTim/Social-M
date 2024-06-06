@@ -3,14 +3,16 @@
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('home');
-});
+    return redirect('/home');
+})->middleware('auth')->name('home');
 
 Auth::routes();
 
@@ -34,6 +36,18 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 });
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
+    Route::get('/users/{user}/followers', [UserController::class, 'followers']);
+    Route::get('/users/{user}/following', [UserController::class, 'following']);
     Route::post('/follow/{user}', [FollowController::class, 'follow'])->name('follow');
-    Route::post('/unfollow/{user}', [FollowController::class, 'unfollow'])->name('unfollow');
+    Route::delete('/unfollow/{user}', [FollowController::class, 'unfollow'])->name('unfollow');
+
+    Route::post('posts', [PostController::class, 'store']);
+
+});
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
+    Route::get('/users/{user}/edit', [UserController::class, 'edit']);
+    Route::patch('/users/{user}', [UserController::class, 'update']);
+    Route::delete('/users/{user}', [UserController::class, 'destroy']);
 });

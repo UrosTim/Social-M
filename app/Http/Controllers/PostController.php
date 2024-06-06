@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth', 'verified']);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -29,7 +35,17 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        //
+        $post = new Post();
+        $imagePath = $request->file('image')->store('images', 'public');
+
+        $post->fill([
+            'content' => $request->input('content'),
+            'user_id' => request()->user()->id,
+            'image' => $imagePath ?? null,
+        ]);
+        $post->save();
+
+        return redirect('/home');
     }
 
     /**
