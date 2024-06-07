@@ -88,7 +88,7 @@
                                     <form action="/post/{{ $post->id }}/like" method="post">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-warning">Unlike</button>
+                                        <button type="submit" class="btn btn-dark">Unlike</button>
                                     </form>
                                 @else
                                     <form action="/post/{{ $post->id }}/like" method="post">

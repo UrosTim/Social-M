@@ -6,6 +6,12 @@
 
 @section('content')
 <div class="container">
+    <div class="d-flex justify-content-center mb-4">
+        <form action="/home" method="get" class="d-flex gap-2 align-items-center">
+            <input type="text" name="search" placeholder="Search posts" class="lh-lg rounded">
+            <button type="submit" class="btn btn-success">Search</button>
+        </form>
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-8">
             <form action="/posts" method="post" enctype="multipart/form-data">

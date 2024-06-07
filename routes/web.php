@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\HomeController;
@@ -31,10 +32,6 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::resource('posts', PostController::class);
-});
-
-Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/users/{user}/followers', [UserController::class, 'followers']);
     Route::get('/users/{user}/following', [UserController::class, 'following']);
     Route::post('/follow/{user}', [FollowController::class, 'follow'])->name('follow');
@@ -46,15 +43,16 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::patch('/users/{user}', [UserController::class, 'update']);
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
 
+    Route::get('/auth/change-password', [ChangePasswordController::class, 'showChangePasswordForm']);
+    Route::patch('/auth/change-password', [ChangePasswordController::class, 'update']);
+
+    Route::resource('posts', PostController::class);
+
     Route::post('/post/{post}/like', [PostController::class, 'like'])->name('post.like');
     Route::delete('/post/{post}/like', [PostController::class, 'unlike'])->name('post.unlike');
 
     Route::post('/post/{post}/comment', [PostController::class, 'addComment'])->name('post.comment');
     Route::delete('/comment/{comment}', [CommentController::class, 'destroy']);
-
-    Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
-    Route::post('posts', [PostController::class, 'store']);
-
 });
 
 Route::group(['middleware' => ['auth']], function () {

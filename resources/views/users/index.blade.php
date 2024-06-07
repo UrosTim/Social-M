@@ -6,6 +6,12 @@
 
 @section('content')
     <div class="container">
+        <div class="d-flex justify-content-center">
+            <form action="/users" method="get" class="d-flex gap-2 align-items-center">
+                <input type="text" name="search" placeholder="Search users" class="lh-lg rounded">
+                <button type="submit" class="btn btn-success">Search</button>
+            </form>
+        </div>
         @foreach($users as $user)
             <div class="mb-2 d-flex align-items-center justify-content-between">
                 <div>

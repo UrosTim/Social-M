@@ -43,21 +43,26 @@
                     </div>
                 </div>
                 <div class="my-4">
-                    <button type="submit" class="btn btn-primary rounded px-2 py-1">
+                    <button type="submit" class="btn btn-primary">
                         Update
                     </button>
-                    <a href="/users/{{ $user->id }}" class="text-decoration-none btn">
+                    <a href="/users/{{ $user->id }}" class="text-decoration-none btn btn-light">
                         Cancel
                     </a>
                 </div>
             </div>
         </form>
-        <form action="/users/{{ $user->id }}" method="POST">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger">
-                Delete
-            </button>
-        </form>
+        <div class="d-flex gap-1">
+            <form action="/users/{{ $user->id }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger">
+                    Delete
+                </button>
+            </form>
+            <a href="/auth/change-password" class="btn btn-warning">
+                Change Password
+            </a>
+        </div>
     </div>
 @endsection

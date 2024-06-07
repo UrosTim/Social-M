@@ -22,10 +22,18 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->get('search');
+        if ($search) {
+            $posts = Post::where('content', 'like', '%' . $search . '%')
+                ->latest()->get();
+        }
+        else {
+            $posts = Post::latest()->get();
+        }
         return view('home', [
-            'posts' => Post::latest()->get(),
+            'posts' => $posts,
         ]);
     }
 }
