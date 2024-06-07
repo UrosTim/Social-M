@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCommentRequest;
+use App\Models\Comment;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
@@ -53,7 +55,11 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        $comments = Comment::where('post_id', $post->id)->get();
+        return view('posts.show', [
+            'post' => $post,
+            'comments' => $comments,
+        ]);
     }
 
     /**
@@ -81,5 +87,25 @@ class PostController extends Controller
         return redirect()
             ->route('users.show', ['user' => Auth::user()])
             ->with('success', 'Post has been deleted');
+    }
+    public function like(Post $post)
+    {
+        $post->likes()->create([
+            'user_id' => auth()->id(),
+        ]);
+        return back();
+    }
+    public function unlike(Post $post)
+    {
+        $post->likes()->where('user_id', auth()->id())->delete();
+        return back();
+    }
+    public function addComment(Post $post)
+    {
+        $post->comments()->create([
+            'user_id' => auth()->id(),
+            'body' => request('body'),
+        ]);
+        return back();
     }
 }

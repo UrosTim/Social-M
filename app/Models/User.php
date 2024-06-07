@@ -6,8 +6,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+ use function Pest\Laravel\post;
 
-class User extends Authenticatable implements MustVerifyEmail
+ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -68,5 +69,9 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isFollowing(User $user): bool
     {
         return $this->following()->where('following_id', $user->id)->exists();
+    }
+    public function hasLiked(Post $post): bool
+    {
+        return $this->likes()->where('post_id', $post->id)->exists();
     }
 }

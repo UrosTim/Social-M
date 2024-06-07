@@ -49,12 +49,37 @@
                             </div>
                         </div>
                 </div>
-                <div class="card-footer">
-                    {{ $post->created_at }}
+                <div class="card-footer d-flex justify-content-between">
+                    <div class="d-flex align-items-center">
+                        {{ $post->created_at }}
+                    </div>
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="text-success-emphasis fw-bold text">
+                            {{ $post->likes->count() }}
+                        </div>
+                        @if($post->user_id === auth()->user()->id)
+                            <a href="/posts/{{ $post->id }}" class="btn btn-warning">
+                                Edit
+                            </a>
+                        @elseif (auth()->user()->hasLiked($post))
+                            <form action="/post/{{ $post->id }}/like" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-dark">Unlike</button>
+                            </form>
+                        @else
+                            <form action="/post/{{ $post->id }}/like" method="post">
+                                @csrf
+                                <button type="submit" class="btn btn-success">Like</button>
+                            </form>
+                        @endif
+                    </div>
                 </div>
-{{--                <div class="card-footer">--}}
-{{--                    Comment--}}
-{{--                </div>--}}
+                <div class="card-footer">
+                    <a href="/posts/{{ $post->id }}" class="text-decoration-none">
+                        Comment
+                    </a>
+                </div>
             </div>
             @endforeach
         </div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
@@ -30,7 +31,6 @@ Route::post('/email/verification-notification', function (Request $request) {
 })->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
 
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::resource('posts', PostController::class);
 });
 
@@ -40,14 +40,24 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::post('/follow/{user}', [FollowController::class, 'follow'])->name('follow');
     Route::delete('/unfollow/{user}', [FollowController::class, 'unfollow'])->name('unfollow');
 
-    Route::post('posts', [PostController::class, 'store']);
-
-});
-
-Route::group(['middleware' => ['auth']], function () {
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
     Route::get('/users/{user}/edit', [UserController::class, 'edit']);
     Route::patch('/users/{user}', [UserController::class, 'update']);
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
+
+    Route::post('/post/{post}/like', [PostController::class, 'like'])->name('post.like');
+    Route::delete('/post/{post}/like', [PostController::class, 'unlike'])->name('post.unlike');
+
+    Route::post('/post/{post}/comment', [PostController::class, 'addComment'])->name('post.comment');
+    Route::delete('/comment/{comment}', [CommentController::class, 'destroy']);
+
+    Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+    Route::post('posts', [PostController::class, 'store']);
+
+});
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+
 });

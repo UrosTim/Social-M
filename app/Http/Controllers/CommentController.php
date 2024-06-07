@@ -65,6 +65,10 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        if (auth()->user()->id !== $comment->user_id) {
+            return response('Unauthorized.', 401);
+        }
+        $comment->delete();
+        return back();
     }
 }

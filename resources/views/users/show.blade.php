@@ -40,12 +40,12 @@
                     <form action="{{ route('unfollow', $user) }}" method="post">
                         @csrf
                         @method('DELETE')
-                        <button type="submit">Unfollow</button>
+                        <button type="submit" class="btn btn-danger">Unfollow</button>
                     </form>
                 @else
                     <form action="{{ route('follow', $user) }}" method="post">
                         @csrf
-                        <button type="submit">Follow</button>
+                        <button type="submit" class="btn btn-primary">Follow</button>
                     </form>
                 @endif
             @endif
@@ -69,7 +69,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer d-flex align-items-center gap-4">
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        {{ $post->created_at }}
                         @if(auth()->id() === $user->id)
                             <form action="/posts/{{ $post->id }}" method="POST">
                                 @csrf
@@ -78,8 +79,25 @@
                                     Delete Post
                                 </button>
                             </form>
+                        @else
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="text-success-emphasis fw-bold text">
+                                    {{ $post->likes->count() }}
+                                </div>
+                                @if (auth()->user()->hasLiked($post))
+                                    <form action="/post/{{ $post->id }}/like" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-warning">Unlike</button>
+                                    </form>
+                                @else
+                                    <form action="/post/{{ $post->id }}/like" method="post">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success">Like</button>
+                                    </form>
+                                @endif
+                            </div>
                         @endif
-                        {{ $post->created_at }}
                     </div>
                 </div>
             @endforeach
